@@ -1,6 +1,6 @@
 package com.udacity.android.popularmovies;
 
-import android.app.Application;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
