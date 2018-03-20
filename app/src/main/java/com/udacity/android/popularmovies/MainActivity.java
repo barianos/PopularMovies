@@ -2,15 +2,17 @@ package com.udacity.android.popularmovies;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
 
     ImageView imageView;
-
+    ArrayList<Movie> movies;
 
 
 
@@ -19,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        movies = null; //TODO Check if NEEDED
 
-        new FetchMovies(this).execute();
+
 
         imageView = findViewById(R.id.imageView);
 
@@ -33,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
 //                .load("http://i.imgur.com/DvpvklR.png")
 //                .placeholder(R.drawable.ic_launcher_background)
 //                .into(imageView);
+
+
+
+        new FetchMovies(this, this).execute();
 
 
     }

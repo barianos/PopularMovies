@@ -12,42 +12,53 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-public class FetchMovies extends AsyncTask {
+import java.util.ArrayList;
+
+public class FetchMovies extends AsyncTask<Object, Void, Object> {
 
 
     private Context context;
+    private MainActivity main;
 
-    public FetchMovies(Context context){
+    public FetchMovies(Context context, MainActivity main) {
         this.context = context;
+        this.main = main;
+
     }
 
+    ArrayList<Movie> movies;
 
     @Override
     protected Object doInBackground(Object[] objects) {
+//    protected Object doInBackground(Object[] objects) {
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String url = "https://api.themoviedb.org/3/movie/popular?api_key="+ context.getString(R.string.movie_db_api_key)+"&language=en-US&page=1";
+        String url = "https://api.themoviedb.org/3/movie/popular?api_key=" + context.getString(R.string.movie_db_api_key) + "&language=en-US&page=1";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("responce" , response);
-                        // Display the first 500 characters of the response string.
-                        //mTextView.setText("Response is: "+ response.substring(0,500));
+                        movies = JSONUtils.parseMovie(response);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                //mTextView.setText("That didn't work!");
                 Log.d("error", error.toString());
             }
         });
 
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(Object o) {
+        super.onPostExecute(o);
+        main.movies = this.movies;
+
+
     }
 }
